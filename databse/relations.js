@@ -1,21 +1,33 @@
-const User = require('../api/models/user.model');
-const Tweet = require('../api/models/tweets.model');
-const Class = require('../api/models/classes.model');
-const ContactInfo = require('../api/models/contact_info.model');
+const User = require('../api/models/user.model.js')
+const Tweet = require('../api/models/tweets.model.js')
+const ContactInfo = require('../api/models/contact_info.model.js')
+const Class = require('../api/models/classes.model.js')
+const UserClass = require('../api/models/user_class.model.js')
+
 
 
 const initializeRelations = () => {
   try {
+    //here relations
+
+    //One To One
     User.hasOne(ContactInfo)
     ContactInfo.belongsTo(User)
-    // Establece una relación uno a muchos entre User y Tweet
-    User.hasMany(Tweet);  // Sequelize asume la clave foránea userId en Tweet
-    Tweet.belongsTo(User);  // Igualmente asume la clave foránea userId en Tweet
-    User.belongsToMany(Class, { through: 'user_class' })
-    Class.belongsToMany(User, { through: 'user_class' })
+
+    // One to Many
+
+    User.hasMany(Tweet)
+    Tweet.belongsTo(User)
+
+    // Many to Many
+
+    User.belongsToMany(Class, { through: UserClass })
+    Class.belongsToMany(User, { through: UserClass })
+
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 
-module.exports = initializeRelations;
+
+module.exports = initializeRelations

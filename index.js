@@ -1,9 +1,4 @@
 const express = require('express')
-const {
-  checkDb,
-  syncModels
-} = require('./databse/index')
-const initializeRelations = require('./databse/relations')
 const app = express()
 
 const initializeExpressAndListen = () => {
@@ -20,10 +15,6 @@ const initializeExpressAndListen = () => {
 
 const startApi = async () => {
   try {
-    await checkDb()
-    //inicializar antes de sincronizar los modelos
-    initializeRelations()
-    await syncModels()
     initializeExpressAndListen()
   } catch (error) {
     console.log(error)

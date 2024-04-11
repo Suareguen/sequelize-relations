@@ -1,17 +1,37 @@
-const User = require('../models/user.model')
+const Class = require('../models/classes.model')
 const ContactInfo = require('../models/contact_info.model')
+const Tweet = require('../models/tweets.model')
+const User = require('../models/user.model')
 
-const getAllUsers = async (req, res) => {
+const getOneUser = async (request, response) => {
   try {
-    const users = await User.findAll()
-    const contactInfo = await users.getContactInfo()
-    console.log(contactInfo)
-    return res.json(contactInfo)
+    // const user = await User.findOne({
+    //   where: {
+    //     name: 'alma'
+    //   },
+    //   include: [ContactInfo, Tweet, Class]
+    // })
+    const userContactInfo = await ContactInfo.findOne({
+      where: {
+        userId: 1
+      }
+    })
+    const user = await User.findOne({
+      where: {
+        name: 'alma'
+      }
+    })
+    const object = {
+      user: user,
+      contactInfo: userContactInfo
+    }
+    return response.status(200).json(object)
   } catch (error) {
     console.log(error)
   }
 }
 
+
 module.exports = {
-  getAllUsers
+  getOneUser
 }
